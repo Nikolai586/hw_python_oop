@@ -55,30 +55,28 @@ class CashCalculator(Calculator):
     def get_today_cash_remained(self, currency):
         total_maney = self.get_today_stats()
         remains = self.limit - total_maney
-        if self.limit == remains:
-                return (f'Денег нет, держись')
-        if self.limit > remains:
+        eur_money = float(remains) / self.EURO_RATE
+        eur_money_r = round(eur_money, 2)
+        usd_money = float(remains) / self.USD_RATE
+        usd_money_r = round(usd_money, 2)
+        rub_maney = float(remains)
+        rub_maney_r = round(rub_maney, 2)
+        if remains > 0:
             if currency == 'eur':
-                eur_money = float(remains) / self.EURO_RATE
-                eur_money_r = round(eur_money, 2)
                 return (f'На сегодня осталось {eur_money_r} Euro')
-            if currency == 'usd':
-                usd_money = float(remains) / self.USD_RATE
-                usd_money_r = round(usd_money, 2)
+            elif currency == 'usd':
                 return (f'На сегодня осталось {usd_money_r} USD')
-            if currency == 'rub':
-                return (f'На сегодня осталось {remains} руб')
-        if self.limit < remains:
+            elif currency == 'rub':
+                return (f'На сегодня осталось {rub_maney_r} руб')
+        elif remains == 0:
+                return ('Денег нет, держись')
+        elif remains < 0:
             if currency == 'eur':
-                eur_money = float(remains) / self.EURO_RATE
-                eur_money_r = round(eur_money, 2)
-                return (f'На сегодня осталось {eur_money_r} Euro')
-            if currency == 'usd':
-                usd_money = float(remains) / self.USD_RATE
-                usd_money_r = round(usd_money, 2)
-                return (f'На сегодня осталось {usd_money_r} USD')
-            if currency == 'rub':
-                return (f'На сегодня осталось {remains} руб')
+                return (f'Денег нет, держись: твой долг - {-eur_money_r} Euro')
+            elif currency == 'usd':
+                return (f'Денег нет, держись: твой долг - {-usd_money_r} USD')
+            elif currency == 'rub':
+                return (f'Денег нет, держись: твой долг - {-rub_maney_r} руб')
 
 
 cash_calculator = CashCalculator(1000)
