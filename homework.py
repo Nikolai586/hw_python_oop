@@ -20,7 +20,7 @@ class Calculator:
     def get_week_stats(self):
         total_week = 0
         now = dt.datetime.now().date()
-        last_week = dt.timedelta(days=7)
+        last_week = dt.timedelta(days=6)
         period = now - last_week
         for day in self.records:
             if period <= day.date <= now:
@@ -55,28 +55,23 @@ class CashCalculator(Calculator):
     def get_today_cash_remained(self, currency):
         total_maney = self.get_today_stats()
         remains = self.limit - total_maney
-        eur_money = float(remains) / self.EURO_RATE
-        eur_money_r = round(eur_money, 2)
-        usd_money = float(remains) / self.USD_RATE
-        usd_money_r = round(usd_money, 2)
-        rub_maney = float(remains)
-        rub_maney_r = round(rub_maney, 2)
+        remained_dict = {
+            'eur': round((float(remains) / self.EURO_RATE), 2),
+            'usd': round((float(remains) / self.USD_RATE), 2),
+            'rub': round((float(remains)), 2)
+        }
+        currency_dict = {
+            'eur': 'Euro',
+            'usd': 'USD',
+            'rub': 'Руб'
+        }
         if remains > 0:
-            if currency == 'eur':
-                return (f'На сегодня осталось {eur_money_r} Euro')
-            elif currency == 'usd':
-                return (f'На сегодня осталось {usd_money_r} USD')
-            elif currency == 'rub':
-                return (f'На сегодня осталось {rub_maney_r} руб')
+            return (f'На сегодня осталось {remained_dict[currency]} {currency_dict[currency]}')
         elif remains == 0:
                 return ('Денег нет, держись')
         elif remains < 0:
-            if currency == 'eur':
-                return (f'Денег нет, держись: твой долг - {-eur_money_r} Euro')
-            elif currency == 'usd':
-                return (f'Денег нет, держись: твой долг - {-usd_money_r} USD')
-            elif currency == 'rub':
-                return (f'Денег нет, держись: твой долг - {-rub_maney_r} руб')
+            return (f'Денег нет, держись: твой долг - {remained_dict[currency]} {currency_dict[currency]}')
+            
 
 
 cash_calculator = CashCalculator(1000)
