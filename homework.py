@@ -63,14 +63,14 @@ class CashCalculator(Calculator):
         currency_dict = {
             'eur': 'Euro',
             'usd': 'USD',
-            'rub': 'Руб'
+            'rub': 'руб'
         }
         if remains > 0:
             return (f'На сегодня осталось {remained_dict[currency]} {currency_dict[currency]}')
         elif remains == 0:
                 return ('Денег нет, держись')
         elif remains < 0:
-            return (f'Денег нет, держись: твой долг - {remained_dict[currency]} {currency_dict[currency]}')
+            return (f'Денег нет, держись: твой долг - {-remained_dict[currency]} {currency_dict[currency]}')
             
 
 
